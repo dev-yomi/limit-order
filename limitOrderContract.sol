@@ -187,7 +187,7 @@ contract LimitOrderContract is ReentrancyGuard {
         IERC20 token = IERC20(_token);
         //token.transfer(msg.sender, feesCollected[_token]) is used to facilitate removal of token fees earned by the contract
         //note that it resets value to 0
-        token.transfer(msg.sender, balanceOf(address(this)));
+        token.transfer(msg.sender, token.balanceOf(address(this)));
         feesCollected[_token] = 0;
     }
 
