@@ -19,6 +19,9 @@ contract LimitOrderContract is ReentrancyGuard {
  * Users can cancel their own limit orders and retrieve their input tokens, while anyone can execute a limit order if the
  * current price is equal to or better than the desired price (within the slippage buffer). 
  * The contract also allows the owner to withdraw collected fees earned in tokens.
+ *
+ * Resolvers (users executing other users orders) receive the resolverFee (set by the user who made the order) minus contractFee (10bp, 0.1%)
+ * contractFee is held by the contract.
  */
 
     //Struct for orders placed
