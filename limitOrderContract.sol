@@ -73,9 +73,6 @@ contract LimitOrderContract is ReentrancyGuard {
         //Transfer tokens from user to contract and approve Uniswap router for spending
         IERC20(tokenIn).transferFrom(msg.sender, address(this), amountIn);
         IERC20(tokenIn).approve(uniswapV3SwapRouter, amountIn);
-        uint256 orderFee = getFee(amountIn, contractFee);
-        //Add calculated contract fee to the feesCollected mapping
-        feesCollected[tokenIn] += resolverFee;
 
         //Store the limit order in the mapping
         limitOrders[nextOrderId] = LimitOrder(
@@ -83,7 +80,7 @@ contract LimitOrderContract is ReentrancyGuard {
             tokenIn,
             tokenOut,
             poolFee,
-            amountIn - orderFee,
+            amountIn,
             price,
             resolverFee,
             slippageBuffer,
@@ -123,10 +120,15 @@ contract LimitOrderContract is ReentrancyGuard {
             //Mark as inactive
             order.isActive = false;
 
+            //Add calculated contract fee to the feesCollected mapping
+            uint256 contractCut = getFee(fee, contractFee);
+
+            
             //Transfer the swapped tokens to the user and earned resolverFee to the resolver
             IERC20(order.tokenOut).transfer(order.user, amountOut - fee);
-            IERC20(order.tokenOut).transfer(msg.sender, fee);
-            emit LimitOrderExecuted(orderId, msg.sender, fee);
+            IERC20(order.tokenOut).transfer(msg.sender, fee - contractCut);
+            feesCollected[order.tokenOut] += contractCut;
+            emit LimitOrderExecuted(orderId, msg.sender, fee - contractCut);
         }
     }
 
