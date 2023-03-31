@@ -17,7 +17,7 @@ Users can place a limit order by calling the `placeLimitOrder` function with the
 
 - `address tokenIn`: Address of the input token
 - `address tokenOut`: Address of the output token
-- `uint256 poolFee`: Fee tier of the Uniswap V3 pool
+- `uint256 poolFee`: Fee tier of the Uniswap V3 pool (in basis points, ensure this corresponds to the pool you want to use)
 - `uint256 amountIn`: Amount of input tokens to be swapped
 - `uint256 price`: Desired price for the swap
 - `uint256 resolverFee`: Resolver fee in basis points
