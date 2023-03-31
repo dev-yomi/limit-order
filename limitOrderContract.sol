@@ -184,18 +184,9 @@ contract LimitOrderContract is ReentrancyGuard {
 
     //onlyOwner function to remove fees earned in any token
     function pullEarnedFees(address _token) public onlyOwner {
-        require(feeFlag, "set fee flag");
         IERC20 token = IERC20(_token);
-        token.transfer(msg.sender, token.balanceOf(address(this)));
+        token.transfer(msg.sender, feesCollected[_token]);
         feesCollected[_token] = 0;
-    }
-    
-    bool public feeFlag  = false;
-    
-    function setFeeFlag() public onlyOwner {
-        if(!feeFlag){
-            feeFlag = false;
-        }
     }
 
     //basic onlyOwner modifier
