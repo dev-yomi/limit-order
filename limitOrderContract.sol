@@ -140,8 +140,7 @@ contract LimitOrderContract is ReentrancyGuard {
         require(order.isActive, "Order not active!");
 
         order.isActive = false;
-        IERC20 token = IERC20(order.tokenIn);
-        token.transfer(order.user, order.amountIn);
+        IERC20(order.tokenIn).transfer(order.user, order.amountIn);
         emit LimitOrderCancelled(orderId);
     }
 
@@ -184,8 +183,7 @@ contract LimitOrderContract is ReentrancyGuard {
 
     //onlyOwner function to remove fees earned in any token
     function pullEarnedFees(address _token) public onlyOwner {
-        IERC20 token = IERC20(_token);
-        token.transfer(msg.sender, feesCollected[_token]);
+        IERC20(_token).transfer(msg.sender, feesCollected[_token]);
         feesCollected[_token] = 0;
     }
 
