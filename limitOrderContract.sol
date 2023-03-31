@@ -192,5 +192,5 @@ contract LimitOrderContract is ReentrancyGuard {
         _;
     }
 
-    //TODO: renounceOwnership function, changeContractFee function etc
+    //TODO: renounceOwnership function, changeContractFee function, updateRouterAddress and updateFactoryAddress functions probably a good idea too
 }
